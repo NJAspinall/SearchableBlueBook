@@ -1,5 +1,6 @@
 package na.searchablebluebook;
 
+import Reader.Reader;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -8,6 +9,7 @@ import javafx.stage.Stage;
 public class BlueBook extends Application {
 
     View view;
+    Reader r;
 
 
 
@@ -22,6 +24,9 @@ public class BlueBook extends Application {
         view = new View(root, stage);
 
         view.loadUI();
+
+        r = new Reader();
+        r.read();
     }
 
 
