@@ -1,15 +1,21 @@
 package na.searchablebluebook;
 
-import Reader.Reader;
+import Reader.SteelReader;
+import Results.UniversalBeam;
+import Tables.TableFactory;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class BlueBook extends Application {
 
     View view;
-    Reader r;
+    Controller controller;
+    SteelReader r;
+
+    TableFactory factory;
 
 
 
@@ -21,12 +27,19 @@ public class BlueBook extends Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle("Steel Blue Book");
         Pane root = new Pane();
+
+
         view = new View(root, stage);
 
-        view.loadUI();
+        controller = new Controller(view);
+        controller.runController();
 
-        r = new Reader();
-        r.read();
+
+        //r = new SteelReader();
+        //ArrayList<Designation> results = r.read();
+
+
+        //displayResults(results);
     }
 
 
@@ -43,7 +56,7 @@ public class BlueBook extends Application {
 
 
 
-    public void displayResults() { view.displayResults(); }
+    public void displayResults(ArrayList<UniversalBeam> results) { view.displayResults(results); }
 
 
 

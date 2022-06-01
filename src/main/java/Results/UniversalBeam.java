@@ -1,6 +1,23 @@
 package Results;
 
-public class Designation {
+import java.util.List;
+
+
+/**
+ * This class will hold each row of the Dimensions & Properties
+ * table for any Steel Shape (such as Universal Beams, ).
+ */
+
+
+public class UniversalBeam {
+
+    /*
+     * Dimensions
+     */
+    //section PreDesignation (1016 x 305)
+    protected String preDesignation;
+    //Section Designation (x 584)
+    protected String designation;
     //Mass per metre (kg/m)
     protected double mass;
     //Depth of Section (millimetres)
@@ -24,6 +41,13 @@ public class Designation {
     //Surface area (metre^2)
     protected double perMetre;
     protected double perTonne;
+
+
+    /*
+     * Properties
+     */
+
+
     //Second moment of area (centimetres^4)
     protected double secondAxisY;
     protected double secondAxisZ;
@@ -31,8 +55,8 @@ public class Designation {
     protected double gyrAxisY;
     protected double gyrAxisZ;
     //Elastic Modulus
-    protected double ElasticAxisY;
-    protected double ElasticAxisZ;
+    protected double elasticAxisY;
+    protected double elasticAxisZ;
     //Plastic Modulus
     protected double plasticAxisY;
     protected double plasticAxisZ;
@@ -44,18 +68,57 @@ public class Designation {
     protected double warpConst;
     //Torsional Constant (centimetres^4)
     protected double torsionConst;
-
-
     //Area of section (centimetres^2)
     protected double area;
 
 
-    /*
+    /**
      * Constructor
-     */
-    public Designation() {
+     **/
+    public UniversalBeam(List<String> line) {
         //take table row as parameter (Map())
         //assign to fields
+
+        this.preDesignation = line.get(0);
+
+        this.designation = line.get(1);
+        //line[2] is blank
+        this.mass = Double.parseDouble(line.get(3));
+        this.depth = Double.parseDouble(line.get(4));
+        this.width = Double.parseDouble(line.get(5));
+        this.web = Double.parseDouble(line.get(6));
+        this.flange = Double.parseDouble(line.get(7));
+        this.radius = Double.parseDouble(line.get(8));
+        this.d = Double.parseDouble(line.get(9));
+
+        this.ratioWeb = Double.parseDouble(line.get(10));
+        this.ratioFlange = Double.parseDouble(line.get(11));
+
+        this.endClearance = Double.parseDouble(line.get(12));
+        this.N = Double.parseDouble(line.get(13));
+        this.n = Double.parseDouble(line.get(14));
+
+        this.perMetre = Double.parseDouble(line.get(15));
+        this.perTonne = Double.parseDouble(line.get(16));
+
+        this.secondAxisY = Double.parseDouble(line.get(17));
+        this.secondAxisZ = Double.parseDouble(line.get(18));
+
+        this.gyrAxisY = Double.parseDouble(line.get(19));
+        this.gyrAxisZ = Double.parseDouble(line.get(20));
+
+        this.elasticAxisY = Double.parseDouble(line.get(21));
+        this.elasticAxisZ = Double.parseDouble(line.get(22));
+
+        this.plasticAxisY = Double.parseDouble(line.get(23));
+        this.plasticAxisZ = Double.parseDouble(line.get(24));
+
+        this.buckling = Double.parseDouble(line.get(23));
+        this.torsionIndex = Double.parseDouble(line.get(24));
+        this.warpConst = Double.parseDouble(line.get(25));
+        this.torsionConst = Double.parseDouble(line.get(26));
+        this.area = Double.parseDouble(line.get(27));
+
     }
 
 
@@ -63,7 +126,15 @@ public class Designation {
      *  Getters for displaying fields
      */
 
+    public String getDesignation() {
+        return designation;
+    }
+
     public double getMass() {
+        return mass;
+    }
+
+    public double massProperty() {
         return mass;
     }
 
@@ -136,11 +207,11 @@ public class Designation {
     }
 
     public double getElasticAxisY() {
-        return ElasticAxisY;
+        return elasticAxisY;
     }
 
     public double getElasticAxisZ() {
-        return ElasticAxisZ;
+        return elasticAxisZ;
     }
 
     public double getPlasticAxisY() {
@@ -169,5 +240,9 @@ public class Designation {
 
     public double getTorsionConst() {
         return torsionConst;
+    }
+
+    public String getPreDesignation() {
+        return preDesignation;
     }
 }
