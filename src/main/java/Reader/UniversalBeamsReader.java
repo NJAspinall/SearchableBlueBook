@@ -20,6 +20,8 @@ public class UniversalBeamsReader extends SteelReader {
 
 
     /**
+     * Search for a singular Section
+     *
      * @param designation -
      * @return
      */
@@ -63,9 +65,9 @@ public class UniversalBeamsReader extends SteelReader {
 
 
     /**
-     * Returns all rows in the file
+     * Reads all rows in the file into UniversalBeam objects
      *
-     * @return ArrayList<SectionProperties> - a list of returned SectionProperties objects
+     * @return ArrayList<UniversalBeam> - a list of returned UniversalBeam objects
      */
     public List<UniversalBeam> read() {
         ArrayList<UniversalBeam> results = new ArrayList<>();
@@ -78,11 +80,11 @@ public class UniversalBeamsReader extends SteelReader {
 
             while (myReader.hasNextLine()) {
 
-                String data = myReader.nextLine();
+                String data = myReader.nextLine().trim();
 
                 /* ignore first 9 lines which is just supplementary
-                information about the source */
-                if(count >= 10) {
+                information about the source of the data */
+                if((count >= 10) && (count <= 117)) {
                     List<String> line = Arrays.asList(data.split(","));
 
                     if(line.size() >= 5) { //do not read empty lines or lines containing notes and comments
@@ -101,7 +103,7 @@ public class UniversalBeamsReader extends SteelReader {
             myReader.close();
 
         } catch (FileNotFoundException e) {
-            System.out.println("The file could not be found.");
+            System.out.println("The Universal Beams file could not be found.");
             e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Unknown Error!");

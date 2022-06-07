@@ -6,6 +6,8 @@ import java.util.List;
 /**
  * This class will hold each row of the Dimensions & Properties
  * table for any Steel Shape (such as Universal Beams, ).
+ *
+ * TODO - Create a Steel Superclass that this one and all other section types will inherit from.
  */
 
 
@@ -76,10 +78,11 @@ public class UniversalBeam {
      * Constructor
      **/
     public UniversalBeam(List<String> line) {
-        //take table row as parameter (Map())
+        //take table row as parameter (Map() ?)
         //assign to fields
 
         this.preDesignation = line.get(0);
+        System.out.println("[INSTANCE] Pre-Designation : " +this.preDesignation);
 
         this.designation = line.get(1);
         //line[2] is blank
@@ -244,5 +247,9 @@ public class UniversalBeam {
 
     public String getPreDesignation() {
         return preDesignation;
+    }
+
+    public void setPreDesignation(String currentReadDesignation) {
+        this.preDesignation = currentReadDesignation;
     }
 }

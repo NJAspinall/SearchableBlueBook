@@ -25,21 +25,21 @@ public class BlueBook extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
+
+        //Setup JavaFX GUI
         stage.setTitle("Steel Blue Book");
         Pane root = new Pane();
 
-
+        //Create MVC - View Class that will create the GUI
         view = new View(root, stage);
 
+        /* Create MVC - Controller Class that will handle all events
+           and provide data to the View. */
         controller = new Controller(view);
+        //assign event handlers and tell the view to load the GUI
         controller.runController();
-
-
-        //r = new SteelReader();
-        //ArrayList<Designation> results = r.read();
-
-
-        //displayResults(results);
+        //the view can internally call the controller when events are fired
+        view.setController(controller);
     }
 
 
