@@ -106,11 +106,17 @@ public class View {
 
         //add ui elements
 
-
-
-        stage.setScene(new Scene(root, 1200, 600));
+        //set the javafx stage and make it visible
+        Scene scene = new Scene(root, 1200, 600);
+        scene.getStylesheets().add("src/main/java/CSS/stylesheet.css");
+        stage.setScene(scene);
         stage.show();
     }
+
+
+
+
+
 
 
 
@@ -121,6 +127,14 @@ public class View {
     public void setController(Controller controller) {
         this.controller = controller;
     }
+
+
+
+
+
+
+
+
 
 
     /**
@@ -146,6 +160,12 @@ public class View {
 
 
 
+
+
+
+
+
+
     protected HBox createTop() {
 
         topPane = new HBox();
@@ -157,8 +177,10 @@ public class View {
         //Sections - DropDown
         sectionTypes = new ComboBox<>();
         sectionTypes.setPrefWidth(350);
-        sectionTypes.setStyle("-fx-font-weight: bold");
-        sectionTypes.setStyle("-fx-font-size: 24px");
+        sectionTypes.setId("sectionTypes");
+        //sectionTypes.setStyle("-fx-font-weight: bold");
+        //sectionTypes.setStyle("-fx-font-size: 24px");
+
 
         sectionTypes.getItems().addAll("Section Type","(UB) Universal Beams", "PlaceHolder", "PlaceHolder");
         sectionTypes.getSelectionModel().selectFirst();
@@ -179,6 +201,13 @@ public class View {
     }
 
 
+
+
+
+
+
+
+
     /**
      * Sets the options in the Section Pre-Designation drop down menu
      *@param preDesignations - ArrayList<String>, a list of the available
@@ -194,6 +223,13 @@ public class View {
         obPreDesignations.clear();
         obPreDesignations.addAll(preDesignations);
     }
+
+
+
+
+
+
+
 
 
     /**
@@ -221,6 +257,13 @@ public class View {
         obSubDesignations.clear();
         obSubDesignations.addAll(subDesignations);
     }
+
+
+
+
+
+
+
 
 
 
@@ -328,6 +371,9 @@ public class View {
 
 
 
+
+
+
     //results
     public HBox createCenter() {
 
@@ -361,6 +407,10 @@ public class View {
 
 
 
+
+
+
+
     public void updateTable(SteelTableView steelTable) {
         if(steelTable != null) {
             table = steelTable.getTable();
@@ -371,22 +421,16 @@ public class View {
     }
 
 
+
+
+
+
+
+
+
     public void updateSearchScreen() {
 
     }
 
-
-
-
-    public void displayResults(ArrayList<UniversalBeam> results) {
-        //display results from query
-
-        for (UniversalBeam d : results) {
-            System.out.println("result designation : " +d.getDesignation());
-            System.out.println("result mass : " +d.getMass());
-            System.out.println("result width : " +d.getWidth());
-            System.out.println("result width : " +d.getWidth());
-        }
-    }
 
 }

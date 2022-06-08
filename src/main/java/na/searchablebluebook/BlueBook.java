@@ -36,32 +36,11 @@ public class BlueBook extends Application {
         /* Create MVC - Controller Class that will handle all events
            and provide data to the View. */
         controller = new Controller(view);
+
         //assign event handlers and tell the view to load the GUI
         controller.runController();
+
         //the view can internally call the controller when events are fired
         view.setController(controller);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void displayResults(ArrayList<UniversalBeam> results) { view.displayResults(results); }
-
-
-
-
-
-
-
 }

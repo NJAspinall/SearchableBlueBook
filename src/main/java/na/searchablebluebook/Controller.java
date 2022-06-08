@@ -36,14 +36,15 @@ public class Controller implements EventHandler {
     public ArrayList< ArrayList<String> > Designations = new ArrayList< ArrayList<String> >();
 
 
-    //Currently selected Pre-Designation
+    //The currently selected Pre-Designation
     public String currentDes = "";
-    //Currently selected Sub-Designation
+    //The currently selected Sub-Designation
     public String currentPreDes = "";
 
 
     /***
-     * Constructor
+     * Constructor, assigns the MVC View class used to present and collect
+     * information from the user.
      *
      * @param view - The MVC View class
      */
@@ -61,7 +62,8 @@ public class Controller implements EventHandler {
 
 
     /**
-     * First method run by BlueBook.java
+     * First method run by BlueBook.java, tells the View class to
+     * load the GUI and assign event handlers.
      */
     public void runController() {
         view.loadUI();
@@ -77,13 +79,10 @@ public class Controller implements EventHandler {
     //used to build lists for further filtering of results
 
     /***
-     * Returns a list containing all Section objects passed back from the Reader
+     * Forms the read list of objects into a 2d array containing an array for each
+     * section grouped by their Pre-Designation.
      *
      * @param shape - The Steel section shape, e.g. Universal Beams
-     * @return List<UniversalBeam> - The list of Section Objects
-     *
-     * TODO : Update with Section Superclass
-     * TODO : PLACE INTO 2D ARRAY HERE, NOT IN SETALLDESIGNATIONS
      */
     public void getAllDesignations(String shape) {
         //TODO: Create Shape Class and make UniversalBeams a subclass,
@@ -111,8 +110,8 @@ public class Controller implements EventHandler {
             if(!d.getPreDesignation().isBlank()) {
                 i = 0;
 
-                System.out.println("New List: " +d.getPreDesignation());
-                System.out.println("Next Element : " +d.getDesignation());
+                //System.out.println("New List: " +d.getPreDesignation());
+                //System.out.println("Next Element : " +d.getDesignation());
 
                 sections.add(new ArrayList<>());
                 sections.get(x).add(d);
@@ -120,7 +119,7 @@ public class Controller implements EventHandler {
                 x++;
             }
             else if(!d.getDesignation().isBlank()) { // if a designation
-                System.out.println("Next Element : " +d.getDesignation());
+                //System.out.println("Next Element : " +d.getDesignation());
                 d.setPreDesignation(currentReadDes);
                 sections.get(x-1).add(d);
             }
@@ -148,29 +147,29 @@ public class Controller implements EventHandler {
 
 
                 int x = 0;
-                int i = 0;
 
+                //TODO : The loop creates one list will all the results
 
                 for (ArrayList<UniversalBeam> list : this.sections) {
 
                     //add to 2d array
 
-                    for (UniversalBeam d : list) {
+                    for(int i=0; i<list.size(); i++) {
 
-                        //if the first element in the sub-array
                         if (i == 0) {
                             Designations.add(new ArrayList<>());
-                            Designations.get(x).add(d.getPreDesignation());
-                            Designations.get(x).add(d.getDesignation());
+                            Designations.get(x).add(list.get(i).getPreDesignation());
+                            Designations.get(x).add(list.get(i).getDesignation());
+                            x++;
+
 
                             //Test Statements
-                            System.out.println("New List created : " + d.getPreDesignation());
-                            System.out.println("Next Element");
+                            //System.out.println("New List created : " + list.get(i).getPreDesignation());
+                            //System.out.println("Next Element : " +list.get(i).getDesignation());
                         } else {
-                            Designations.get(x).add(d.getDesignation());
+                            Designations.get(x-1).add(list.get(i).getDesignation());
+                            //System.out.println("Next Element : " +list.get(i).getDesignation());
                         }
-
-                        i++;
                     }
                 }
 
@@ -397,10 +396,6 @@ public class Controller implements EventHandler {
 
 
 
-            /*TODO - after the first if statement succeeds, the second
-            will only succeed if it is the first sub-designation in the
-            list. why?*/
-
             //Find and load the Section Objects info
 
             //Test Statement
@@ -414,6 +409,7 @@ public class Controller implements EventHandler {
                         if(ub.getDesignation().equals(currentDes)) {
                             System.out.println("OBJECT FOUND ! :");
                             System.out.println("Designation : " +ub.getPreDesignation() + " " +ub.getDesignation());
+                            view.currentResult = ub;
                         }
                     }
                 }
