@@ -82,7 +82,6 @@ public class UniversalBeam {
         //assign to fields
 
         this.preDesignation = line.get(0);
-        System.out.println("[INSTANCE] Pre-Designation : " +this.preDesignation);
 
         this.designation = line.get(1);
         //line[2] is blank

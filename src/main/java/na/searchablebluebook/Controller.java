@@ -27,7 +27,9 @@ public class Controller implements EventHandler {
 
 
     //TODO : update to be a superclass holding the UniversalBeam objects
-    public List<UniversalBeam> sections;
+    //public List<ArrayList<UniversalBeam>> sections;
+
+    public ArrayList<ArrayList<UniversalBeam>> sections = new ArrayList<>();
 
 
     //2d Array to hold the designations
@@ -83,17 +85,17 @@ public class Controller implements EventHandler {
      * TODO : Update with Section Superclass
      * TODO : PLACE INTO 2D ARRAY HERE, NOT IN SETALLDESIGNATIONS
      */
-    public List<UniversalBeam> getAllDesignations(String shape) {
+    public void getAllDesignations(String shape) {
         //TODO: Create Shape Class and make UniversalBeams a subclass,
             //as well as move over common fields
 
-        sections = new ArrayList<>();
+        List<UniversalBeam> readSections = new ArrayList<>();
 
-        ArrayList<ArrayList<UniversalBeam>> sections2 = new ArrayList<>();
+
 
         //get the results from reading the file
         r = rFactory.createReader(shape);
-        sections = r.read();
+        readSections = r.read();
 
 
 
@@ -102,35 +104,28 @@ public class Controller implements EventHandler {
 
         String currentReadDes = "";
 
-        for(UniversalBeam d : this.sections) {
+        for(UniversalBeam d : readSections) {
             //add to 2d array
 
             //if it contains a header e.g. '1016 x 305'
             if(!d.getPreDesignation().isBlank()) {
                 i = 0;
 
-                System.out.println("sections2 New List: " +d.getPreDesignation());
-                System.out.println("sections2 Next Element : " +d.getDesignation());
+                System.out.println("New List: " +d.getPreDesignation());
+                System.out.println("Next Element : " +d.getDesignation());
 
-                sections2.add(new ArrayList<>());
-                sections2.get(x).add(d);
+                sections.add(new ArrayList<>());
+                sections.get(x).add(d);
                 currentReadDes = d.getPreDesignation();
                 x++;
             }
             else if(!d.getDesignation().isBlank()) { // if a designation
-                System.out.println("sections2 Next Element : " +d.getDesignation());
+                System.out.println("Next Element : " +d.getDesignation());
                 d.setPreDesignation(currentReadDes);
-                sections2.get(x-1).add(d);
+                sections.get(x-1).add(d);
             }
             i++;
         }
-
-
-
-
-
-
-        return sections;
     }
 
 
@@ -142,38 +137,80 @@ public class Controller implements EventHandler {
 
 
 
-    public ArrayList<ArrayList<String>> setDesignations() {
-        if(!this.sections.isEmpty()) {
+    public void setDesignations() {
 
-            int x = 0;
-            int i = 1;
+        System.out.println();
+        System.out.println("Setting Designations...");
+        System.out.println();
 
-            for(UniversalBeam d : this.sections) {
-                //add to 2d array
+        if(this.sections != null) {
+            if (!this.sections.isEmpty()) {
 
-                //if it contains a header e.g. '1016 x 305'
-                if(!d.getPreDesignation().isBlank()) {
-                    i = 0;
 
-                    //System.out.println("New List: " +d.getPreDesignation());
-                    //System.out.println("Next Element : " +d.getDesignation());
+                int x = 0;
+                int i = 0;
 
-                    Designations.add(new ArrayList<>());
-                    Designations.get(x).add(d.getPreDesignation());
-                    Designations.get(x).add(d.getDesignation());
-                    x++;
+
+                for (ArrayList<UniversalBeam> list : this.sections) {
+
+                    //add to 2d array
+
+                    for (UniversalBeam d : list) {
+
+                        //if the first element in the sub-array
+                        if (i == 0) {
+                            Designations.add(new ArrayList<>());
+                            Designations.get(x).add(d.getPreDesignation());
+                            Designations.get(x).add(d.getDesignation());
+
+                            //Test Statements
+                            System.out.println("New List created : " + d.getPreDesignation());
+                            System.out.println("Next Element");
+                        } else {
+                            Designations.get(x).add(d.getDesignation());
+                        }
+
+                        i++;
+                    }
                 }
-                else if(!d.getDesignation().isBlank()) { // if a designation
 
-                    Designations.get(x-1).add(d.getDesignation());
-                }
-                i++;
             }
+            else {
+                System.out.println("[ERROR] : ArrayList sections is empty ");
+            }
+
+
+
+                    /*
+
+                    //if it contains a header e.g. '1016 x 305'
+                    if (!d.getPreDesignation().isBlank()) {
+                        i = 0;
+
+                        //System.out.println("New List: " +d.getPreDesignation());
+                        //System.out.println("Next Element : " +d.getDesignation());
+
+                        Designations.add(new ArrayList<>());
+                        Designations.get(x).add(d.getPreDesignation());
+                        Designations.get(x).add(d.getDesignation());
+                        x++;
+                    } else if (!d.getDesignation().isBlank()) { // if a designation
+
+                        Designations.get(x - 1).add(d.getDesignation());
+                    }
+                    i++;
+
+                }
+            }
+
+                     */
+        }
+
+        else {
+            System.out.println("[ERROR] : Cannot set Designation objects.");
         }
 
         viewList();
-
-        return Designations;
     }
 
 
@@ -246,6 +283,7 @@ public class Controller implements EventHandler {
 
         System.out.println("2D Array : " +Designations.size()+ " elements.");
         System.out.println("The current 2D array is as follows: ");
+        System.out.println("-= LIST END =-");
 
         for(ArrayList<String> list : Designations){
             if((list != null) && (!list.isEmpty())){
@@ -254,7 +292,13 @@ public class Controller implements EventHandler {
                     System.out.println("Sub-Designation : " +list.get(i));
                 }
             }
+
+            else {
+                System.out.println("[ERROR] : Cannot find Pre-Designation!");
+            }
         }
+
+        System.out.println("-= LIST START =-");
     }
 
 
@@ -273,10 +317,10 @@ public class Controller implements EventHandler {
      */
     public void handleSectionSelect(String type) {
         //read results from the relevant csv file
-        this.sections = this.getAllDesignations(type);
+        this.getAllDesignations(type);
 
         //string of section designations e.g. '1016 x 305' 'x 584'
-        ArrayList<ArrayList<String>> Designations = this.setDesignations();
+        this.setDesignations();
 
         //group part of section designation e.g. '1016 x 305'
         ArrayList<String> preDesignations = this.setPreDesignations();
@@ -363,42 +407,17 @@ public class Controller implements EventHandler {
             System.out.println("Searching for " +currentPreDes +currentDes);
 
             //iterate through list of all read sections
-            for (UniversalBeam ub : sections) {
+            for (ArrayList<UniversalBeam> list : sections) {
 
-                if(ub.getPreDesignation().equals("")) {
-                    System.out.println("[ERROR] : NO PRE-DESIGNATION FOUND.");
-                }
-
-
-                //Test Statement
-                System.out.println("NEXT OBJECT : " +ub.getPreDesignation() +" | "+ ub.getDesignation());
-
-
-                //Find the object with the matching Pre-Designation
-                if (ub.getPreDesignation().equals(currentPreDes)) {
-
-                    //Test Statements
-                    System.out.println("Found object's pre-designation : " + currentPreDes);
-                    System.out.println("-== "+ currentPreDes + currentDes +" ==-");
-                    System.out.println();
-                    System.out.println("Target :" +currentDes+ ". Result : " +ub.getDesignation());
-
-                    //Check if the object also has the matching Sub-Designation
-                    if(ub.getDesignation().equals(currentDes)) {
-
-                        //Test Statements
-                        System.out.println("Object found - ");
-                        System.out.println("PreDes : " + ub.getPreDesignation());
-                        System.out.println("Des : " + ub.getDesignation());
-
-                        //Set the currently selected Section object
-                        view.currentResult = ub;
-
-                        //End the for loop
-                        break;
+                if(list.get(0).getPreDesignation().equals(currentPreDes)) {
+                    for(UniversalBeam ub : list) {
+                        if(ub.getDesignation().equals(currentDes)) {
+                            System.out.println("OBJECT FOUND ! :");
+                            System.out.println("Designation : " +ub.getPreDesignation() + " " +ub.getDesignation());
+                        }
                     }
                 }
-                System.out.println("-= NEXT RESULT =-");
+
             }
 
             //update the centre pane with the currently selected Section object information
