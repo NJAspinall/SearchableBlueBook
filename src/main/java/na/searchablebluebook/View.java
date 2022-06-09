@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 
 import javafx.scene.control.*;
 
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -39,6 +40,13 @@ public class View {
     //TODO - update to be a generic section superclass, not only UniversalBeam
     //Single Result
     protected UniversalBeam currentResult;
+
+
+
+    public Image img1;
+    public Image img2;
+    public Image img3;
+
 
 
     /*
@@ -179,7 +187,7 @@ public class View {
         sectionTypes.setPrefWidth(350);
         sectionTypes.setId("sectionTypes");
         //sectionTypes.setStyle("-fx-font-weight: bold");
-        //sectionTypes.setStyle("-fx-font-size: 24px");
+        sectionTypes.setStyle("-fx-font-size: 24px");
 
 
         sectionTypes.getItems().addAll("Section Type","(UB) Universal Beams", "PlaceHolder", "PlaceHolder");
@@ -264,7 +272,13 @@ public class View {
 
 
 
+    public void setLeftMenu(VBox left) {
+        borderPane.setLeft(left);
+    }
 
+    public void setCenterResults(HBox center) {
+        borderPane.setCenter(center);
+    }
 
 
     public VBox createLeft() {
@@ -347,9 +361,10 @@ public class View {
             //System.out.println("Failed to load Sub-Designations");
         }
 
+        designationSection.setStyle("-fx-background-color: white; -fx-border-style: solid");
+
         //add ComboBoxes and Label to the HBox 'designationSection'
         designationSection.getChildren().addAll(sectionDesLabel, sectionPreDes, sectionDes);
-
 
 
         /*
@@ -394,7 +409,7 @@ public class View {
         table.setPrefWidth(900);
         centerPane.getChildren().add(resultView);
 
-        UniversalBeamResults ubr = new UniversalBeamResults();
+        UniversalBeamResults ubr = new UniversalBeamResults(img1, img2, img3);
 
         HBox table = ubr.singleResult(currentResult);
 

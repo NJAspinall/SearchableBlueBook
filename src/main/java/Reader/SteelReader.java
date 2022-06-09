@@ -1,6 +1,7 @@
 package Reader;
 
 import Results.UniversalBeam;
+import javafx.scene.image.Image;
 
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
@@ -17,7 +18,11 @@ import java.util.Scanner; // Import the Scanner class to read text files
  */
 
 
-public class SteelReader {
+public abstract class SteelReader {
+
+    public Image img1;
+    public Image img2;
+    public Image img3;
 
 
     //empty object to return for empty searches
@@ -38,19 +43,53 @@ public class SteelReader {
     protected String testFile = "src/main/java/Data/UniversalBeams/UB-secpropsdimsprops.csv";
 
 
-
-
-
+    /***
+     * Constructor
+     */
     public SteelReader() {
 
     }
 
 
-    public UniversalBeam searchDesignation(String designation) {
+
+
+
+
+
+
+    public Image getImg1() {
+        return img1;
+    }
+
+    public Image getImg2() {
+        return img2;
+    }
+
+    public Image getImg3() {
+        return img3;
+    }
+
+
+
+
+
+
+
+
+
+    /***
+     * Search specifically for Sections by various filters
+     *
+     * @param filter String - What to search by
+     * @param value String - The value to search for
+     * @return
+     */
+    public UniversalBeam searchDesignation(String filter, String value) {
         return null;
     }
 
 
+    public abstract ArrayList<UniversalBeam> searchByFilter(String filter, String value);
 
     /*
      * Test read

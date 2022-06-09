@@ -96,7 +96,7 @@ public class Controller implements EventHandler {
         r = rFactory.createReader(shape);
         readSections = r.read();
 
-
+        view.img1 = r.getImg1();
 
         int x = 0;
         int i = 1;
@@ -329,7 +329,7 @@ public class Controller implements EventHandler {
         view.definePreDesignations();
 
         //update left menu with updated drop-down lists
-        view.borderPane.setLeft(view.createLeft());
+        view.setLeftMenu(view.createLeft());
     }
 
 
@@ -390,9 +390,9 @@ public class Controller implements EventHandler {
             currentDes = des;
 
             //Test Statements
-            System.out.println("Handling Designations...");
-            System.out.println("Sub-Designation " + currentPreDes + " " + currentDes + " selected.");
-            System.out.println();
+            //System.out.println("Handling Designations...");
+            //System.out.println("Sub-Designation " + currentPreDes + " " + currentDes + " selected.");
+            //System.out.println();
 
 
 
@@ -417,7 +417,7 @@ public class Controller implements EventHandler {
             }
 
             //update the centre pane with the currently selected Section object information
-            view.borderPane.setCenter(view.createCenter());
+            view.setCenterResults(view.createCenter());
         }
     }
 

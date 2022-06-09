@@ -1,8 +1,10 @@
 package Reader;
 
 import Results.UniversalBeam;
+import javafx.scene.image.Image;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.*;
 
@@ -10,58 +12,129 @@ public class UniversalBeamsReader extends SteelReader {
 
     public static final String FILEPATH = "src/main/java/Data/UniversalBeams/UB-secpropsdimsprops.csv";
 
-
-
+    protected Image img1;
+    protected Image img2;
+    protected Image img3;
 
 
     public UniversalBeamsReader() {
 
+        try {
+            this.img1 = new Image(new FileInputStream("src/main/java/images/universalbeams/1.png"));
+            this.img2  = new Image(new FileInputStream("src/main/java/images/universalbeams/2.png"));
+            this.img3 = new Image(new FileInputStream("src/main/java/images/universalbeams/3.png"));
+        }
+        catch(FileNotFoundException e) {
+
+        }
     }
 
 
+
+
+
+
+
+
     /**
-     * Search for a singular Section
-     *
-     * @param designation -
      * @return
      */
     @Override
-    public UniversalBeam searchDesignation(String designation) {
+    public Image getImg1() {
+        return this.img1;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public Image getImg2() {
+        return this.img2;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public Image getImg3() {
+        return this.img3;
+    }
+
+
+
+
+
+
+
+
+
+    /***
+     * Search specifically for Sections by various filters
+     *
+     * @param filter String - What to search by
+     * @param value String - The value to search for
+     * @return
+     */
+    @Override
+    public ArrayList<UniversalBeam> searchByFilter(String filter, String value) {
 
         //search file for designation
         UniversalBeam d = new UniversalBeam(NO_RESULTS);
         boolean found = false;
 
+        int column = 0;
+
+        switch (filter) {
+            case "pre-designation" -> column = 0;
+            case "sub-designation" -> column = 1;
+            case "mass" -> column = 2;
+            case "depth" -> column = 3;
+            case "width" -> column = 4;
+            case "web" -> column = 5;
+            case "flange" -> column = 6;
+            case "radius" -> column = 7;
+            case "d" -> column = 8;
+        }
+
+        //list to hold any results
+        ArrayList<UniversalBeam> results = new ArrayList<>();
+
         try {
+
+            //read the csv file
             File file = new File(FILEPATH);
             Scanner reader = new Scanner(file);
 
-            String preDesignation = "";
-
             while(reader.hasNextLine()) {
-                if(reader.nextLine().equals(designation)) {
-                    List<String> line = List.of(reader.nextLine().split(","));
+                //get the next line
+                List<String> line = Arrays.asList(reader.nextLine().split(","));
 
-                    if(!line.get(0).trim().isBlank()) {
-                        preDesignation = line.get(0);
-                        System.out.println("new preDesignation: " +preDesignation);
-                    } else {
-                        line.set(0, preDesignation);
-                        System.out.println("kept");
-                    }
-                    d = new UniversalBeam(line);
+                //compare the value against the correct column
+                if(line.get(column).equals(value)) {
+                    System.out.println("[SEARCH] : Object found with " +filter +" : " +value);
+
+                    //create object of matched row
+                    UniversalBeam ub = new UniversalBeam(line);
+
+                    //add the object to the list
+                    results.add(ub);
                 }
             }
-        } catch(Exception e) {
-            System.out.println("[Error] : Cannot find specified designation.");
         }
 
-        if (!found) {
-            return null;
-        } else {
-            return d;
+        catch(Exception e) {
+            e.printStackTrace();
         }
+
+        return results;
     }
+
+
+
+
+
+
+
 
 
     /**
@@ -112,14 +185,5 @@ public class UniversalBeamsReader extends SteelReader {
 
         return results;
     }
-
-
-
-
-
-
-
-
-
 
 }

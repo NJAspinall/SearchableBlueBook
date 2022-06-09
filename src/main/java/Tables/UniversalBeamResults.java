@@ -2,6 +2,8 @@ package Tables;
 
 import Results.UniversalBeam;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -17,12 +19,19 @@ public class UniversalBeamResults {
 
     protected HBox table;
 
+    protected ImageView diagram1;
+    protected ImageView diagram2;
+    protected ImageView diagram3;
+
 
     /**
      * Constructor
      */
-    public UniversalBeamResults() {
+    public UniversalBeamResults(Image img1, Image img2, Image img3) {
         table = new HBox();
+        this.diagram1 = new ImageView(img1);
+        this.diagram2 = new ImageView(img2);
+        this.diagram3 = new ImageView(img3);
     }
 
 
@@ -51,6 +60,7 @@ public class UniversalBeamResults {
 
             VBox labels = new VBox();
             VBox values = new VBox();
+            VBox images = new VBox();
 
 
             /*
@@ -120,6 +130,17 @@ public class UniversalBeamResults {
                     webValue,
                     flangeValue
             );
+
+
+
+            //images
+            images.getChildren().addAll(
+                    diagram1,
+                    diagram2,
+                    diagram3
+            );
+
+
 
             table.getChildren().addAll(
                     labels,
