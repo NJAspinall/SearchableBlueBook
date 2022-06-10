@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 
-public class UniversalBeam {
+public class UniversalBeam extends Section {
 
     /*
      * Dimensions
@@ -74,16 +74,24 @@ public class UniversalBeam {
     protected double area;
 
 
+
+
+
+
+
+
+
     /**
      * Constructor
      **/
     public UniversalBeam(List<String> line) {
+
+        //
+        super(line.get(0), line.get(1));
+
         //take table row as parameter (Map() ?)
         //assign to fields
 
-        this.preDesignation = line.get(0);
-
-        this.designation = line.get(1);
         //line[2] is blank
         this.mass = Double.parseDouble(line.get(3));
         this.depth = Double.parseDouble(line.get(4));
@@ -124,12 +132,25 @@ public class UniversalBeam {
     }
 
 
-    /*
-     *  Getters for displaying fields
-     */
 
+
+
+
+
+
+    /* ------------------------------
+     *  Getters for displaying fields
+     */ //---------------------------
+
+    @Override
+    public String getPreDesignation() {
+        return super.getPreDesignation();
+    }
+
+
+    @Override
     public String getDesignation() {
-        return designation;
+        return super.getDesignation();
     }
 
     public double getMass() {
@@ -244,9 +265,6 @@ public class UniversalBeam {
         return torsionConst;
     }
 
-    public String getPreDesignation() {
-        return preDesignation;
-    }
 
     public void setPreDesignation(String currentReadDesignation) {
         this.preDesignation = currentReadDesignation;

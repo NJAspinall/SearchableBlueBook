@@ -29,10 +29,11 @@ public class Controller implements EventHandler {
     //TODO : update to be a superclass holding the UniversalBeam objects
     //public List<ArrayList<UniversalBeam>> sections;
 
+    //2D Array to hold the Section Objects
     public ArrayList<ArrayList<UniversalBeam>> sections = new ArrayList<>();
 
 
-    //2d Array to hold the designations
+    //2D Array to hold the identifying String Designation for each object
     public ArrayList< ArrayList<String> > Designations = new ArrayList< ArrayList<String> >();
 
 
@@ -76,6 +77,13 @@ public class Controller implements EventHandler {
 
 
 
+
+
+
+
+
+
+
     //used to build lists for further filtering of results
 
     /***
@@ -88,18 +96,14 @@ public class Controller implements EventHandler {
         //TODO: Create Shape Class and make UniversalBeams a subclass,
             //as well as move over common fields
 
-        List<UniversalBeam> readSections = new ArrayList<>();
-
-
-
         //get the results from reading the file
         r = rFactory.createReader(shape);
-        readSections = r.read();
+        List<UniversalBeam> readSections = r.read();
 
         view.img1 = r.getImg1();
 
+        //keeps track of which array is currently being populated
         int x = 0;
-        int i = 1;
 
         String currentReadDes = "";
 
@@ -108,22 +112,26 @@ public class Controller implements EventHandler {
 
             //if it contains a header e.g. '1016 x 305'
             if(!d.getPreDesignation().isBlank()) {
-                i = 0;
 
-                //System.out.println("New List: " +d.getPreDesignation());
-                //System.out.println("Next Element : " +d.getDesignation());
-
+                /* create a new list for the following elements with
+                the same pre-designation */
                 sections.add(new ArrayList<>());
+                //add Section object to the newly created list
                 sections.get(x).add(d);
+
+                /* set the current Pre-Designation to assign to the objects
+                whose preDesignation field is blank */
                 currentReadDes = d.getPreDesignation();
+
+                //add all future objects to this list
                 x++;
             }
             else if(!d.getDesignation().isBlank()) { // if a designation
-                //System.out.println("Next Element : " +d.getDesignation());
+                //set the Section objects Pre-Designation
                 d.setPreDesignation(currentReadDes);
+                //add Section object to the current list
                 sections.get(x-1).add(d);
             }
-            i++;
         }
     }
 
@@ -134,28 +142,29 @@ public class Controller implements EventHandler {
 
 
 
-
-
+    /***
+     * Populates a second 2D array that just holds the designations
+     * for each object (used to populate drop-down menus).
+     */
     public void setDesignations() {
 
-        System.out.println();
-        System.out.println("Setting Designations...");
-        System.out.println();
-
+        //if the Sections have been read successfully
         if(this.sections != null) {
             if (!this.sections.isEmpty()) {
 
-
+                //keep track of the current place in the 2D array
                 int x = 0;
 
-                //TODO : The loop creates one list will all the results
-
+                //for each list of Section objects
                 for (ArrayList<UniversalBeam> list : this.sections) {
 
-                    //add to 2d array
-
+                    /* go through the list of objects, adding their designations
+                    in order to the 2D array */
                     for(int i=0; i<list.size(); i++) {
 
+                        /* the first element in each array is the
+                         grouping pre-designation. Copy the designations
+                         into a new list */
                         if (i == 0) {
                             Designations.add(new ArrayList<>());
                             Designations.get(x).add(list.get(i).getPreDesignation());
@@ -163,12 +172,9 @@ public class Controller implements EventHandler {
                             x++;
 
 
-                            //Test Statements
-                            //System.out.println("New List created : " + list.get(i).getPreDesignation());
-                            //System.out.println("Next Element : " +list.get(i).getDesignation());
                         } else {
+                            //copy designation into list
                             Designations.get(x-1).add(list.get(i).getDesignation());
-                            //System.out.println("Next Element : " +list.get(i).getDesignation());
                         }
                     }
                 }
@@ -178,38 +184,13 @@ public class Controller implements EventHandler {
                 System.out.println("[ERROR] : ArrayList sections is empty ");
             }
 
-
-
-                    /*
-
-                    //if it contains a header e.g. '1016 x 305'
-                    if (!d.getPreDesignation().isBlank()) {
-                        i = 0;
-
-                        //System.out.println("New List: " +d.getPreDesignation());
-                        //System.out.println("Next Element : " +d.getDesignation());
-
-                        Designations.add(new ArrayList<>());
-                        Designations.get(x).add(d.getPreDesignation());
-                        Designations.get(x).add(d.getDesignation());
-                        x++;
-                    } else if (!d.getDesignation().isBlank()) { // if a designation
-
-                        Designations.get(x - 1).add(d.getDesignation());
-                    }
-                    i++;
-
-                }
-            }
-
-                     */
         }
 
         else {
             System.out.println("[ERROR] : Cannot set Designation objects.");
         }
 
-        viewList();
+        //viewList();
     }
 
 
@@ -220,19 +201,26 @@ public class Controller implements EventHandler {
 
 
 
+
+    /***
+     * Creates the list of Pre-designations to be selected from a drop-down menu.
+     *
+     * @return ArrayList<String> - list containing all Pre-Designations for the
+     *  selected Section type.
+     */
     public ArrayList<String> setPreDesignations() {
+        //list to hold drop-down elements
         ArrayList<String> preDesignations = new ArrayList<>();
 
+        //if Designations has been correctly populated
         if((this.Designations != null) && (!this.Designations.isEmpty())) {
+            /* get the first entry of each list which is the Pre-designation
+            that groups the sections within and add it to the list */
             for (ArrayList<String> list : Designations) {
                 preDesignations.add(list.get(0));
             }
         }
 
-//        System.out.println("Pre-Designations :");
-//        for(String s : preDesignations) {
-//            System.out.println(s);
-//        }
         return preDesignations;
     }
 
@@ -244,28 +232,28 @@ public class Controller implements EventHandler {
 
 
 
+    /***
+     * Creates a list of all the sub-designations grouped by the given
+     * Pre-Designation.
+     *
+     * @param preDes - the Pre-Designation chosen by the user.
+     * @return ArrayList<String> - the list of the returned sub-designations
+     */
     public ArrayList<String> setSubDesignations(String preDes) {
-        //System.out.println("Setting Sub-Designations");
 
         ArrayList<String> subDesignations = new ArrayList<>();
 
         for(ArrayList<String> list : Designations) {
+            /* if the given pre-designation matches the first
+             element in the list. */
             if(preDes.equals(list.get(0))) {
+                /* loop through that list and add the sub-designations
+                 to the list to be returned */
                 for(int i=1; i<list.size(); i++) {
                     subDesignations.add(list.get(i));
-                    //System.out.println(list.get(i)+ " added.");
-                } break;
+                } break; //stop searching
             }
         }
-
-        /*
-        System.out.println("Designation " +preDes+ " selected.");
-
-        System.out.println("Sub-Designations :");
-        for(String s : subDesignations) {
-            System.out.println(s);
-        }
-        */
 
         return subDesignations;
     }
@@ -278,6 +266,10 @@ public class Controller implements EventHandler {
 
 
 
+    /***
+     * For testing purposes, prints the Section designation of each object stored
+     * in the 2D array grouped by the common Pre-Designations.
+     */
     public void viewList() { //max 13 rows in array
 
         System.out.println("2D Array : " +Designations.size()+ " elements.");
@@ -381,34 +373,25 @@ public class Controller implements EventHandler {
      */
     public void handleDesignation(String des) {
 
-        /* if the event is fired without a value being selected,
-         such as when a new PreDesignation is selected resetting
-         the ComboBox containing Sub-Designations. */
+        /* if the user has selected a designation and fired this event. */
         if(des != null && !des.equals("")) {
 
             //Set the currently selected Sub-Designation
             currentDes = des;
 
-            //Test Statements
-            //System.out.println("Handling Designations...");
-            //System.out.println("Sub-Designation " + currentPreDes + " " + currentDes + " selected.");
-            //System.out.println();
-
-
-
             //Find and load the Section Objects info
-
-            //Test Statement
-            System.out.println("Searching for " +currentPreDes +currentDes);
 
             //iterate through list of all read sections
             for (ArrayList<UniversalBeam> list : sections) {
 
+                //find the list it is in
                 if(list.get(0).getPreDesignation().equals(currentPreDes)) {
+
+                    //iterate through the list and find the object itself
                     for(UniversalBeam ub : list) {
                         if(ub.getDesignation().equals(currentDes)) {
-                            System.out.println("OBJECT FOUND ! :");
-                            System.out.println("Designation : " +ub.getPreDesignation() + " " +ub.getDesignation());
+
+                            //set the retrieved object in the view
                             view.currentResult = ub;
                         }
                     }
