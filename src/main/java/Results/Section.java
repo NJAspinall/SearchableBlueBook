@@ -8,6 +8,8 @@ public class Section {
 
     /***
      * Constructor
+     *
+     * @param preDes - String, the Sections pre designation e.g.
      */
     public Section(String preDes, String des) {
         preDesignation = preDes;
@@ -25,5 +27,9 @@ public class Section {
 
     public String getDesignation() {
         return designation;
+    }
+
+    public void setPreDesignation(String preDesignation) {
+        this.preDesignation = preDesignation;
     }
 }

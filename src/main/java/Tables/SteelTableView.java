@@ -1,5 +1,6 @@
 package Tables;
 
+import Results.Section;
 import Results.UniversalBeam;
 import javafx.scene.control.TableView;
 
@@ -13,5 +14,5 @@ public class SteelTableView {
 
     public TableView getTable() { return table; }
 
-    public void setTableData(List<UniversalBeam> rows) { }
+    public void setTableData(List<Section> rows) { }
 }

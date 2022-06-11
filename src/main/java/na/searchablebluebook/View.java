@@ -1,5 +1,6 @@
 package na.searchablebluebook;
 
+import Results.Section;
 import Results.UniversalBeam;
 import Tables.SteelTableView;
 import Tables.UniversalBeamResults;
@@ -39,7 +40,7 @@ public class View {
 
     //TODO - update to be a generic section superclass, not only UniversalBeam
     //Single Result
-    protected UniversalBeam currentResult;
+    protected Section currentResult;
 
 
 

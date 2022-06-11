@@ -1,5 +1,6 @@
 package Reader;
 
+import Results.Section;
 import Results.UniversalBeam;
 import javafx.scene.image.Image;
 
@@ -142,7 +143,7 @@ public class UniversalBeamsReader extends SteelReader {
      *
      * @return ArrayList<UniversalBeam> - a list of returned UniversalBeam objects
      */
-    public List<UniversalBeam> read() {
+    public ArrayList<Section> read() {
         ArrayList<UniversalBeam> results = new ArrayList<>();
 
         int count = 0;

@@ -2,6 +2,7 @@ package na.searchablebluebook;
 
 import Reader.ReaderFactory;
 import Reader.SteelReader;
+import Results.Section;
 import Results.UniversalBeam;
 import Tables.TableFactory;
 import javafx.event.Event;
@@ -30,7 +31,7 @@ public class Controller implements EventHandler {
     //public List<ArrayList<UniversalBeam>> sections;
 
     //2D Array to hold the Section Objects
-    public ArrayList<ArrayList<UniversalBeam>> sections = new ArrayList<>();
+    public ArrayList<ArrayList<Section>> sections = new ArrayList<>();
 
 
     //2D Array to hold the identifying String Designation for each object
@@ -98,7 +99,7 @@ public class Controller implements EventHandler {
 
         //get the results from reading the file
         r = rFactory.createReader(shape);
-        List<UniversalBeam> readSections = r.read();
+        List<Section> readSections = r.read();
 
         view.img1 = r.getImg1();
 
@@ -107,7 +108,7 @@ public class Controller implements EventHandler {
 
         String currentReadDes = "";
 
-        for(UniversalBeam d : readSections) {
+        for(Section d : readSections) {
             //add to 2d array
 
             //if it contains a header e.g. '1016 x 305'
@@ -156,7 +157,7 @@ public class Controller implements EventHandler {
                 int x = 0;
 
                 //for each list of Section objects
-                for (ArrayList<UniversalBeam> list : this.sections) {
+                for (ArrayList<Section> list : this.sections) {
 
                     /* go through the list of objects, adding their designations
                     in order to the 2D array */
@@ -382,17 +383,17 @@ public class Controller implements EventHandler {
             //Find and load the Section Objects info
 
             //iterate through list of all read sections
-            for (ArrayList<UniversalBeam> list : sections) {
+            for (ArrayList<Section> list : sections) {
 
                 //find the list it is in
                 if(list.get(0).getPreDesignation().equals(currentPreDes)) {
 
                     //iterate through the list and find the object itself
-                    for(UniversalBeam ub : list) {
-                        if(ub.getDesignation().equals(currentDes)) {
+                    for(Section section : list) {
+                        if(section.getDesignation().equals(currentDes)) {
 
                             //set the retrieved object in the view
-                            view.currentResult = ub;
+                            view.currentResult = section;
                         }
                     }
                 }
@@ -436,7 +437,6 @@ public class Controller implements EventHandler {
             if(!type.equals("Section Type")) {
                 handleSectionSelect(type);
             }
-            System.out.println("Event 1 Cleared.");
         }
 
 
