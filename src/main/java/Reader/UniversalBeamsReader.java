@@ -11,7 +11,21 @@ import java.util.*;
 
 public class UniversalBeamsReader extends SteelReader {
 
+
+
+    /*
+     * Dimensions & Properties
+     */
     public static final String FILEPATH = "src/main/java/Data/UniversalBeams/UB-secpropsdimsprops.csv";
+
+
+    /*
+     * Detailing & Fire Parameters
+     */
+    public static final String FIREPATH = "src/main/java/Data/UniversalBeams/UB-secpropsdetailingfire.csv";
+
+
+
 
     protected Image img1;
     protected Image img2;
@@ -149,12 +163,12 @@ public class UniversalBeamsReader extends SteelReader {
         int count = 0;
 
         try {
-            File myObj = new File(FILEPATH);
-            Scanner myReader = new Scanner(myObj);
+            File file = new File(FILEPATH);
+            Scanner reader = new Scanner(file);
 
-            while (myReader.hasNextLine()) {
+            while (reader.hasNextLine()) {
 
-                String data = myReader.nextLine().trim();
+                String data = reader.nextLine().trim();
 
                 /* ignore first 9 lines which is just supplementary
                 information about the source of the data */
@@ -174,7 +188,7 @@ public class UniversalBeamsReader extends SteelReader {
                 count++;
 
             }
-            myReader.close();
+            reader.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("The Universal Beams file could not be found.");
@@ -186,5 +200,36 @@ public class UniversalBeamsReader extends SteelReader {
 
         return results;
     }
+
+
+
+
+
+
+
+    public void readFireDetailing() {
+
+
+        try {
+            File file = new File(FIREPATH);
+            Scanner reader = new Scanner(file);
+
+
+        } catch(FileNotFoundException e) {
+            System.out.println("[ERROR] : The file " +FIREPATH+ " cannot be found.");
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            System.out.println("Unknown Error!");
+            e.printStackTrace();
+        }
+    }
+
+
+    public void readAxialCompression() {
+
+    }
+
+
 
 }

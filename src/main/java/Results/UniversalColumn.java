@@ -2,22 +2,15 @@ package Results;
 
 import java.util.List;
 
-
-/***
- * This Class contains methods to load data separately to minimise load times
- *
- **/
-public class UniversalBeam extends OpenRolledSection {
-
-    protected static final String TYPE = "ORS"; //OpenRolledSection
+public class UniversalColumn extends StructuralHollowSection {
 
 
 
 
-    /***
+    /**
      * Constructor
      **/
-    public UniversalBeam(List<String> line) {
+    public UniversalColumn(List<String> line) {
 
         //TODO take table row as parameter (Map() ?)
         //assign to fields
@@ -60,20 +53,4 @@ public class UniversalBeam extends OpenRolledSection {
         this.area = Double.parseDouble(line.get(27));
 
     }
-
-
-    /***
-     * Loads the information for Fire Detailing
-     *
-     * TODO - will need to link to UniversalBeamsReader
-     */
-    public void loadFireDetailing() {
-        /*
-         * TODO - set new parameters specifically for the
-         *  fire detailing
-         */
-    }
-
-
-
 }

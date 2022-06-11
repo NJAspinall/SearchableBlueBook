@@ -2,6 +2,7 @@ package Reader;
 
 import Results.Section;
 import Results.UniversalBeam;
+import Results.UniversalColumn;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -15,12 +16,11 @@ import java.util.List;
  * This class will need to read a CSV file and extract info about the beams
  */
 
-
+/***
+ * This abstract Class can be subclassed to create concrete readers to read
+ * different csv files which will have different headings.
+ */
 public abstract class SteelReader {
-
-    public Image img1;
-    public Image img2;
-    public Image img3;
 
 
     //empty object to return for empty searches
@@ -36,41 +36,12 @@ public abstract class SteelReader {
     );
 
 
-    //UniversalBeams
-    protected static final String FILEPATH = "C:\\Users\\Nathan\\IdeaProjects\\SearchableBlueBook\\src\\main\\java\\Data\\UniversalBeams\\UB-secpropsdimsprops.csv";
-    protected String testFile = "src/main/java/Data/UniversalBeams/UB-secpropsdimsprops.csv";
-
-
     /***
      * Constructor
      */
     public SteelReader() {
 
     }
-
-
-
-
-
-
-
-
-    public Image getImg1() {
-        return img1;
-    }
-
-    public Image getImg2() {
-        return img2;
-    }
-
-    public Image getImg3() {
-        return img3;
-    }
-
-
-
-
-
 
 
 
@@ -89,20 +60,19 @@ public abstract class SteelReader {
 
     public abstract ArrayList<UniversalBeam> searchByFilter(String filter, String value);
 
-    /*
-     * Test read
+
+    /***
+     * read all rows from a file and return them as Section objects
+     *
+     * @return - ArrayList<Section> - the array of Section objects
      */
-    public ArrayList<Section> read() {
+    public abstract ArrayList<Section> read();
 
 
 
-
-
-
-        return null;
-    }
-
-
+    /*
+     * Use factory object here to create Section sub-objects
+     */
 
     /**
      * Read a line of data into an object
